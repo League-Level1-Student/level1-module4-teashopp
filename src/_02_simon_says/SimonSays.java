@@ -19,6 +19,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import com.sun.javafx.embed.swing.Disposer;
+
 import javafx.scene.input.KeyCode;
 
 import java.io.IOException;
@@ -98,14 +100,20 @@ public class SimonSays extends KeyAdapter {
 		tries = newtries;
 
 		// 25. If tries is greater than 9 (or however many you want)...
-
+		if (tries >= 9) {
+			
+			
 		// 26. Tell the user their score
+			System.out.println("you have " + points + " points!");
 
 		// 27. Exit the program
+			
+		}
 
 		// 23. Dispose of the frame
-
+		frame.dispose();
 		// 24. Call the showImage method to show a new image
+		showImage();
 	}
 
 	private void showImage() {
