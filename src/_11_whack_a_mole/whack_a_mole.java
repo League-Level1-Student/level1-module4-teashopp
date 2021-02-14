@@ -1,5 +1,6 @@
 package _11_whack_a_mole;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
@@ -54,77 +55,78 @@ public class whack_a_mole implements ActionListener {
 
 	public void setup() {
 
-		frame.add(panel);
-
-		frame.setSize(500, 700);
+		//panel.setPreferredSize(new Dimension(500, 700));
 		frame.setVisible(true);
 
 		drawButtons(rand = new Random().nextInt(8));
 
+		frame.add(panel);
+		frame.pack();
+		
 	}
 
 	public void actionPerformed(ActionEvent e) {
 
 		if (mole == e.getSource()) {
-			frame.dispose();
+			frame.remove(panel);
+			panel = new JPanel();
 			int newscore = score + 1;
 			score = newscore;
 			System.out.println(score);
-			
+
 			if (score == 10) {
-				endGame();
+				endGame(null, newscore);
+
 			}
-			
+
 		}
 
 		else {
-			frame.dispose();
+			frame.remove(panel);
+			panel = new JPanel();
 			int newwrong = wrong + 1;
 			wrong = newwrong;
 			speak("Oh man");
-			
+
 			if (wrong == 1) {
 				System.out.println("Aw man!");
-			} 
-			else {
+			} else {
 				System.out.println("Not again!");
 			}
-
 		}
+
+		setup();
 
 	}
 
 	static void speak(String words) {
-        if( System.getProperty( "os.name" ).contains( "Windows" ) ) {
-            String cmd = "PowerShell -Command \"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('"
-                    + words + "');\"";
-            try {
-                Runtime.getRuntime().exec( cmd ).waitFor();
-            } catch( Exception e ) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                Runtime.getRuntime().exec( "say " + words ).waitFor();
-            } catch( Exception e ) {
-                e.printStackTrace();
-            }
-        }
-        
-        
-        private void endGame(Date timeAtStart, int molesWhacked) { 
-            Date timeAtEnd = new Date();
-            JOptionPane.showMessageDialog(null, "Your whack rate is "
-                    + ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked)
-                          + " moles per second.");
-        }
-        
-        
-        private void playSound(String fileName) { 
-            AudioClip sound = (AudioClip) JApplet.newAudioClip(getClass().getResource(fileName));
-            sound.play();
-        }
-        
-    }
+		if (System.getProperty("os.name").contains("Windows")) {
+			String cmd = "PowerShell -Command \"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('"
+					+ words + "');\"";
+			try {
+				Runtime.getRuntime().exec(cmd).waitFor();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				Runtime.getRuntime().exec("say " + words).waitFor();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void endGame(Date timeAtStart, int molesWhacked) {
+		Date timeAtEnd = new Date();
+		JOptionPane.showMessageDialog(null, "Your whack rate is "
+				+ ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked) + " moles per second.");
+	}
+
+	private void playSound(String fileName) {
+		AudioClip sound = (AudioClip) JApplet.newAudioClip(getClass().getResource(fileName));
+		sound.play();
+	}
 
 }
